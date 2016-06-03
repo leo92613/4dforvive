@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4dforvive.CSharp.Plugins", "4dforvive.CSharp.Plugins.csproj", "{281C0FAB-29C3-D4F8-C283-E3C8E685C3A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4dforvive.CSharp", "4dforvive.CSharp.csproj", "{0BFA5DED-FA1B-67EF-93D9-703CBA1E0788}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4dforvive.CSharp.Editor", "4dforvive.CSharp.Editor.csproj", "{AF71AD1D-7C19-D1C0-5535-252EF5B4E11F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{281C0FAB-29C3-D4F8-C283-E3C8E685C3A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{281C0FAB-29C3-D4F8-C283-E3C8E685C3A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{281C0FAB-29C3-D4F8-C283-E3C8E685C3A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{281C0FAB-29C3-D4F8-C283-E3C8E685C3A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BFA5DED-FA1B-67EF-93D9-703CBA1E0788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BFA5DED-FA1B-67EF-93D9-703CBA1E0788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BFA5DED-FA1B-67EF-93D9-703CBA1E0788}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BFA5DED-FA1B-67EF-93D9-703CBA1E0788}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF71AD1D-7C19-D1C0-5535-252EF5B4E11F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF71AD1D-7C19-D1C0-5535-252EF5B4E11F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF71AD1D-7C19-D1C0-5535-252EF5B4E11F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF71AD1D-7C19-D1C0-5535-252EF5B4E11F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4DGameforvive.CSharp.Plugins", "4DGameforvive.CSharp.Plugins.csproj", "{C70432C2-68BF-38BD-209F-E6AA479BB461}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4DGameforvive.CSharp", "4DGameforvive.CSharp.csproj", "{0E07943B-9E9F-192B-2835-FB57C297F4A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4DGameforvive.CSharp.Editor", "4DGameforvive.CSharp.Editor.csproj", "{DFEB8E9D-61E6-020A-CB8B-CEF556FF72EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C70432C2-68BF-38BD-209F-E6AA479BB461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C70432C2-68BF-38BD-209F-E6AA479BB461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C70432C2-68BF-38BD-209F-E6AA479BB461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C70432C2-68BF-38BD-209F-E6AA479BB461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E07943B-9E9F-192B-2835-FB57C297F4A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E07943B-9E9F-192B-2835-FB57C297F4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E07943B-9E9F-192B-2835-FB57C297F4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E07943B-9E9F-192B-2835-FB57C297F4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFEB8E9D-61E6-020A-CB8B-CEF556FF72EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFEB8E9D-61E6-020A-CB8B-CEF556FF72EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFEB8E9D-61E6-020A-CB8B-CEF556FF72EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFEB8E9D-61E6-020A-CB8B-CEF556FF72EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

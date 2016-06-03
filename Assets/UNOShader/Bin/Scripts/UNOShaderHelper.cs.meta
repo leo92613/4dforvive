@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a57e0e363027e48458f117bb7d1b39ff
+labels:
+- Scroll
+- Rotate
+- UV
+- Mobile
+- Shader
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 6e623087d6d6a274f85cff45cdd61692
+labels:
+- Customize
+- RotateUV
+- ScrollUV
+- ShadowColor
+- UNLIT
+- UNOShader
+- Shader
+- Mobile
+timeCreated: 1426866041
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

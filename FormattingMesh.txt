@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+int main()
+{
+vector<vector<int>> vertices;
+for (int i = -1; i <= 1; i += 2)
+    for (int j = -1; j <= 1; j += 2)
+        for (int k = -1; k <= 1; k += 2)
+            for (int l = -1; l <= 1; l += 2) {
+                vector<int> tmp;
+                tmp.push_back(l);
+                tmp.push_back(k);
+                tmp.push_back(j);
+                tmp.push_back(i);
+                vertices.push_back(tmp);
+            }
+vector<vector<int>> faces;
+for( int i = 0; i<4;i++)
+    for ( int j = i+1 ; j<4; j++)
+        for (int k = -1; k<=1;k+=2)
+            for (int l = -1;l<=1;l+=2)
+                {
+                vector<int> tmp;
+                for ( int m = 0; m<16;m++)
+                {
+                    if (vertices[m][i] == k && vertices[m][j] == l)
+                    {
+                        tmp.push_back(m);
+                    }
+                }
+                swap (tmp[0],tmp[1]);
+                faces.push_back(tmp);
+                }
+for (int i =0;i<faces.size();i++)
+{
+    for (int j = 0; j<4;j++)
+        cout<<faces[i][j]<<',';
+    cout<<endl;
+
+}
+}

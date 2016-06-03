@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4dforvive-master.CSharp.Plugins", "4dforvive-master.CSharp.Plugins.csproj", "{0F920377-B5E3-31C8-B32D-A07F99EE7C57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4dforvive-master.CSharp", "4dforvive-master.CSharp.csproj", "{EE1FA54C-DF06-9CB1-9B88-F894C6273DCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4dforvive-master.CSharp.Editor", "4dforvive-master.CSharp.Editor.csproj", "{7D36F09E-81C2-CA0F-9E90-EC5BB2A381C6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F920377-B5E3-31C8-B32D-A07F99EE7C57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F920377-B5E3-31C8-B32D-A07F99EE7C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F920377-B5E3-31C8-B32D-A07F99EE7C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F920377-B5E3-31C8-B32D-A07F99EE7C57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE1FA54C-DF06-9CB1-9B88-F894C6273DCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE1FA54C-DF06-9CB1-9B88-F894C6273DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE1FA54C-DF06-9CB1-9B88-F894C6273DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE1FA54C-DF06-9CB1-9B88-F894C6273DCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D36F09E-81C2-CA0F-9E90-EC5BB2A381C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D36F09E-81C2-CA0F-9E90-EC5BB2A381C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D36F09E-81C2-CA0F-9E90-EC5BB2A381C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D36F09E-81C2-CA0F-9E90-EC5BB2A381C6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
