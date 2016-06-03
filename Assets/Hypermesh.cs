@@ -9,10 +9,9 @@ namespace Holojam.IO {
     [RequireComponent(typeof(MeshRenderer))]
     public class HyperCubeMesh : MonoBehaviour {
         int size;
-        GameObject[] edges;
+        Trackball trackball = new Trackball(4);
         public Vector4[] srcVertices;
         public Vector4[] vertices;
-        Vector2[] index;
     public HyperCubeMesh (){
             srcVertices = new Vector4[16];
             vertices = new Vector4[16];
@@ -24,7 +23,33 @@ namespace Holojam.IO {
                             vertices[n] = new Vector4((float)l* 0.175f, (float)k* 0.175f, (float)j* 0.175f, (float)i* 0.175f);
                             srcVertices[n++] = new Vector4((float)l* 0.175f, (float)k* 0.175f, (float)j* 0.175f, (float)i* 0.175f);
                         }
-}
+        }
+        public HyperCubeMesh(Vector4 A_, Vector4 B_) {
+            srcVertices = new Vector4[16];
+            vertices = new Vector4[16];
+            int n = 0;
+            for (int i = -1; i <= 1; i += 2)
+                for (int j = -1; j <= 1; j += 2)
+                    for (int k = -1; k <= 1; k += 2)
+                        for (int l = -1; l <= 1; l += 2) {
+                            vertices[n] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) + A_;
+                            srcVertices[n++] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) +A_;
+                        }
+            float[] A = new float[4] { 0f, 0f, 0f, 0f };
+            float[] B = new float[4] { B_.x, B_.y, B_.z, B_.w };
+            trackball.rotate(A, B);
+            for (int i = 0; i < 16; i++) {
+
+                float[] src = new float[4];
+                src[0] = srcVertices[i].x;
+                src[1] = srcVertices[i].y;
+                src[2] = srcVertices[i].z;
+                src[3] = srcVertices[i].w;
+                float[] dst = new float[4];
+                trackball.transform(src, dst);
+                updatepoint4(dst, i);
+            }
+        }
         public Vector3 get3dver(int i) {
             float factor = 1 / (1 + vertices[i].w);
             Vector3 rst;
