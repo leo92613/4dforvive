@@ -12,6 +12,7 @@ namespace Holojam.IO {
         Trackball trackball = new Trackball(4);
         public Vector4[] srcVertices;
         public Vector4[] vertices;
+        public Vector4 center = new Vector4(0,0,0,0);
     public HyperCubeMesh (){
             srcVertices = new Vector4[16];
             vertices = new Vector4[16];
@@ -23,8 +24,11 @@ namespace Holojam.IO {
                             vertices[n] = new Vector4((float)l* 0.175f, (float)k* 0.175f, (float)j* 0.175f, (float)i* 0.175f);
                             srcVertices[n++] = new Vector4((float)l* 0.175f, (float)k* 0.175f, (float)j* 0.175f, (float)i* 0.175f);
                         }
+           // Debug.Log("init is finished");
         }
-        public HyperCubeMesh(Vector4 A_, Vector4 B_) {
+        public HyperCubeMesh(Vector4 root, Vector4 A_) {
+            Debug.Log(A_);
+            center = root + A_;
             srcVertices = new Vector4[16];
             vertices = new Vector4[16];
             int n = 0;
@@ -32,28 +36,16 @@ namespace Holojam.IO {
                 for (int j = -1; j <= 1; j += 2)
                     for (int k = -1; k <= 1; k += 2)
                         for (int l = -1; l <= 1; l += 2) {
-                            vertices[n] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) + A_;
-                            srcVertices[n++] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) +A_;
+                            vertices[n] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) + center;
+                            srcVertices[n++] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) +center;
                         }
-            float[] A = new float[4] { 0f, 0f, 0f, 0f };
-            float[] B = new float[4] { B_.x, B_.y, B_.z, B_.w };
-            trackball.rotate(A, B);
-            for (int i = 0; i < 16; i++) {
-
-                float[] src = new float[4];
-                src[0] = srcVertices[i].x;
-                src[1] = srcVertices[i].y;
-                src[2] = srcVertices[i].z;
-                src[3] = srcVertices[i].w;
-                float[] dst = new float[4];
-                trackball.transform(src, dst);
-                updatepoint4(dst, i);
+                Debug.Log("Re-init is done!");
             }
-        }
+        
         public Vector3 get3dver(int i) {
             float factor = 1 / (1 + vertices[i].w);
             Vector3 rst;
-            rst = new Vector3(vertices[i].x/factor, vertices[i].y/factor, vertices[i].z/factor);
+            rst = new Vector3(vertices[i].x, vertices[i].y, vertices[i].z);
             return rst;
         }
         public void updatepoint4(float[] src, int i) {
@@ -70,15 +62,16 @@ namespace Holojam.IO {
         public Vector3 A_;
         public Vector3 B_;
         public Vector4 A, B;
+        public Vector4 center = new Vector4(0f,0f,0f,0f);
         bool isbutton;
-        public GameObject Trackball;
+        public GameObject manager;
         float radius;
         public Vector3 movement;
         Vector2 _00 = new Vector2(0, 0);
         Vector2 _01 = new Vector2(0, 1);
         Vector2 _10 = new Vector2(1, 0);
         Vector2 _11 = new Vector2(1, 1);
-        Trackball trackball;
+        //Trackball trackball;
         public HyperCubeMesh cube;
         Vector2[] uvs;
         Mesh mesh;
@@ -99,10 +92,36 @@ namespace Holojam.IO {
             GetComponent<MeshFilter>().mesh = mesh;
         }
 
-        void Start()
+       public void Setup( Vector3 B2, Vector4 B1) {
+            B_ = B2;
+            B = B1;
+        }
+       public void Init(Vector4 A_) {
+            cube = new HyperCubeMesh(center,A_);
+            A = new Vector4();
+            /*
+            Vector3 relapos = new Vector3();
+            relapos = (B_ - box.position) * 8f / 3f;
+            float r = (float)Math.Sqrt(relapos.x * relapos.x + relapos.y * relapos.y + relapos.z * relapos.z);
+            if (r < radius) {
+                B = new Vector4(relapos.x, relapos.y, relapos.z, (float)Math.Sqrt(radius * radius - relapos.x * relapos.x - relapos.y * relapos.y - relapos.z * relapos.z));
+            } else {
+                //float length = relapos.magnitude;
+                Vector3 Q = (radius / r) * relapos;
+                relapos = Q + box.position;
+                B = new Vector4(Q.x, Q.y, Q.z, 0f);
+            }
+            */
+            UpdateRotation(cube);
+            A = B;
+            Debug.Log("Init finished");
+
+        }
+
+        void Awake()
         {
            // box = this.GetComponent<Transform>();
-            cube = new HyperCubeMesh();
+            cube = new HyperCubeMesh(center,center);
             #region Faces
             faces = new int[] {4,0,8,12,
             6,2,10,14,
@@ -151,41 +170,24 @@ namespace Holojam.IO {
             for (int i = 0; i < 16; i++) {
                 vertices[i] = cube.get3dver(i);
             }
-            #region Color
-             colorindex = new int[] {1,3,5,7,9,11,13,15,
-                                          0,2,4,6,8,10,12,14,
-                                          2,3,6,7,10,11,14,15,
-                                          0,1,4,5,8,9,12,13,
-                                          4,5,6,7,12,13,14,15,
-                                          0,1,2,3,8,9,10,11,
-                                          8,9,10,11,12,13,14,15,
-                                          0,1,2,3,4,5,6,7};
-            for(int i =0; i< 64;i++) {
-                colorindex[i] = colorindex[i] + 16 * (i / 16);
-            }
-            
-            #endregion
             mesh.vertices = vertices;
            //mesh.uv = uvs;
             mesh.SetIndices(faces, MeshTopology.Quads, 0);
             mesh.RecalculateBounds();
             mesh.Optimize();
             GetComponent<MeshFilter>().mesh = mesh;
-            trackball = new Trackball(4);
+            //trackball = new Trackball(4);
             A_ = new Vector3();
             B_ = new Vector3();
             isbutton = false;
             A = new Vector4();
             B = new Vector4();
             radius = 1.0f;
+            Debug.Log("Awaken");
         }
 
-        void UpdateRotation(HyperCubeMesh cube, Trackball trackball, Vector4 A_, Vector4 B_) {
+       public void UpdateRotation(HyperCubeMesh cube) {
 
-            float[] A = new float[4] { A_.x, A_.y, A_.z, A_.w };
-            float[] B = new float[4] { B_.x, B_.y, B_.z, B_.w };
-
-            trackball.rotate(A, B);
 
             for (int i = 0; i < 16; i++) {
 
@@ -196,7 +198,7 @@ namespace Holojam.IO {
                 src[3] = cube.srcVertices[i].w;
                 float[] dst = new float[4];
 
-                trackball.transform(src, dst);
+                manager.GetComponent<Manager>().trackball.transform(src, dst);
 
                 cube.updatepoint4(dst, i);
             }
@@ -220,7 +222,7 @@ namespace Holojam.IO {
                         relapos = Q + box.position;
                         B = new Vector4(Q.x, Q.y, Q.z, 0f);
                     }
-                    UpdateRotation(cube, trackball, A, B);
+                    UpdateRotation(cube);
                     A = B;
                 
             }
@@ -264,21 +266,21 @@ namespace Holojam.IO {
 
         public void OnGlobalTriggerPressUp(ViveEventData eventData) {
             isbutton = false;
-            A_ = eventData.module.transform.position;
+         //   A_ = eventData.module.transform.position;
             B_ = eventData.module.transform.position;
            // Debug.Log("Trigger Pressed up");
         }
 
         public void OnGlobalTriggerTouchDown(ViveEventData eventData) {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnGlobalTriggerTouch(ViveEventData eventData) {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
         public void OnGlobalTriggerTouchUp(ViveEventData eventData) {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
 

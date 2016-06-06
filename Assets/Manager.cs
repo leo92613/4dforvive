@@ -3,15 +3,21 @@ using System.Collections;
 using System;
 
 namespace Holojam.IO {
-    public class Manager : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler, IGlobalTouchpadPressUpHandler {
+    public class Manager : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler, IGlobalTouchpadPressUpHandler , IGlobalTouchpadTouchSetHandler{
         [SerializeField]
         int toggle;
+        [SerializeField]
         Vector3 A_;
+        [SerializeField]
         Vector3 B_;
+        [SerializeField]
         Vector4 A, B;
+        Vector2 touch;
         public Transform box;
         bool isbutton;
-        Trackball trackball;
+        public Trackball trackball;
+        public Transform root;
+        public GameObject initmesh;
         float radius;
         public int[] hyperface;
         public HyperCubeMesh hypermesh;
@@ -43,7 +49,29 @@ namespace Holojam.IO {
         }
 
         // Update is called once per frame
+        void Create(Vector4 _A) {
+            GameObject meshClone = (GameObject)Instantiate(initmesh, box.position,box.rotation);
+            meshClone.GetComponent<Transform>().parent = box;
+
+            meshClone.GetComponent<Transform>().localScale = new Vector3(1f/0.75f, 1f/0.75f, 1f/0.75f);
+            meshClone.GetComponent<Hypermesh>().box = box;
+            meshClone.GetComponent<Hypermesh>().manager = this.gameObject;
+            meshClone.GetComponent<Hypermesh>().module = module;
+            meshClone.GetComponent<Hypermesh>().Setup(B_,B);
+            meshClone.GetComponent<Hypermesh>().Init(_A);
+        }
+
+        public void UpdateRotation(Trackball trackball, Vector4 A_, Vector4 B_) {
+
+            float[] A = new float[4] { A_.x, A_.y, A_.z, A_.w };
+            float[] B = new float[4] { B_.x, B_.y, B_.z, B_.w };
+
+            trackball.rotate(A, B);
+
+        }
+
         void Update() {
+
             if (isbutton) {
                 Vector3 relapos = new Vector3();
                 relapos = (B_ - box.position) * 8f / 3f;
@@ -56,6 +84,7 @@ namespace Holojam.IO {
                     relapos = Q + box.position;
                     B = new Vector4(Q.x, Q.y, Q.z, 0f);
                 }
+                UpdateRotation(trackball, A, B);
                 A = B;
             }
         }
@@ -65,7 +94,7 @@ namespace Holojam.IO {
         }
 
         public void OnGlobalGripPress(ViveEventData eventData) {
-            box.position = eventData.module.transform.position + movement;
+          //  box.position = eventData.module.transform.position + movement;
 
         }
 
@@ -103,18 +132,38 @@ namespace Holojam.IO {
         }
 
         public void OnGlobalTriggerTouchDown(ViveEventData eventData) {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnGlobalTriggerTouch(ViveEventData eventData) {
-            throw new NotImplementedException();
+          //  throw new NotImplementedException();
         }
 
         public void OnGlobalTriggerTouchUp(ViveEventData eventData) {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
         public void OnGlobalTouchpadPressUp(ViveEventData eventData) {
-            toggle = (toggle + 1) % 8;
+            Create(neighbors[toggle]);
+        }
+
+        void IGlobalTouchpadTouchDownHandler.OnGlobalTouchpadTouchDown(ViveEventData eventData) {
+            touch = eventData.touchpadAxis;
+        }
+
+        void IGlobalTouchpadTouchHandler.OnGlobalTouchpadTouch(ViveEventData eventData) {
+            if (Mathf.Abs(eventData.touchpadAxis.x - touch.x) > 0.3) {
+                Vector3 a = new Vector3(touch.x, touch.y, 0);
+                Vector3 b = new Vector3(eventData.touchpadAxis.x, eventData.touchpadAxis.y, 0);
+                if (a.x * b.y - a.y * b.x < 0)
+                    toggle = (toggle + 1) % 8;
+                else
+                    toggle = (toggle + 7) % 8;
+                touch = eventData.touchpadAxis;
+            }
+           // Debug.Log(faceindex);
+        }
+        void IGlobalTouchpadTouchUpHandler.OnGlobalTouchpadTouchUp(ViveEventData eventData) {
+            //throw new NotImplementedException();
         }
     }
 }
