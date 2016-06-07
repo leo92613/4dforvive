@@ -16,15 +16,16 @@ namespace Holojam.IO {
         public Transform box;
         bool isbutton;
         public Trackball trackball;
-        public Transform root;
+        public GameObject root;
         public GameObject initmesh;
+        public Hyperface hyperface;
         float radius;
-        public int[] hyperface;
+       // public int[] hyperface;
         public HyperCubeMesh hypermesh;
         [SerializeField] Vector3 movement;
         // Use this for initialization
         public Vector3[] vertices;
-        [SerializeField] Vector4[] neighbors;
+        public Vector4[] neighbors;
         void Awake() {
             neighbors = new Vector4[8];
             neighbors[0] = new Vector4(1, 0, 0, 0) * 0.175f *2f;
@@ -52,13 +53,15 @@ namespace Holojam.IO {
         void Create(Vector4 _A) {
             GameObject meshClone = (GameObject)Instantiate(initmesh, box.position,box.rotation);
             meshClone.GetComponent<Transform>().parent = box;
-
+            
+            root.GetComponent<Hypermesh>().neighborcubes[toggle] = meshClone;
             meshClone.GetComponent<Transform>().localScale = new Vector3(1f/0.75f, 1f/0.75f, 1f/0.75f);
             meshClone.GetComponent<Hypermesh>().box = box;
-            meshClone.GetComponent<Hypermesh>().manager = this.gameObject;
+            meshClone.GetComponent<Hypermesh>().manager = this.gameObject;     
             meshClone.GetComponent<Hypermesh>().module = module;
             meshClone.GetComponent<Hypermesh>().Setup(B_,B);
             meshClone.GetComponent<Hypermesh>().Init(_A);
+            meshClone.GetComponent<Hypermesh>().Reg(root);
         }
 
         public void UpdateRotation(Trackball trackball, Vector4 A_, Vector4 B_) {
@@ -143,7 +146,13 @@ namespace Holojam.IO {
             //throw new NotImplementedException();
         }
         public void OnGlobalTouchpadPressUp(ViveEventData eventData) {
-            Create(neighbors[toggle]);
+            if (root.GetComponent<Hypermesh>().neighborcubes[toggle] == null)
+                Create(root.GetComponent<Hypermesh>().center+neighbors[toggle]);
+            else {
+                root = root.GetComponent<Hypermesh>().neighborcubes[toggle];
+                hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
+                hyperface.GetComponent<Hyperface>().Renew();
+            }
         }
 
         void IGlobalTouchpadTouchDownHandler.OnGlobalTouchpadTouchDown(ViveEventData eventData) {
@@ -160,7 +169,7 @@ namespace Holojam.IO {
                     toggle = (toggle + 7) % 8;
                 touch = eventData.touchpadAxis;
             }
-           // Debug.Log(faceindex);
+           // Debug.Log(toggle);
         }
         void IGlobalTouchpadTouchUpHandler.OnGlobalTouchpadTouchUp(ViveEventData eventData) {
             //throw new NotImplementedException();

@@ -8,6 +8,7 @@ namespace Holojam.IO {
         Vector3 B_;
         Vector4 A, B;
         Vector2 touch;
+        public Vector4 center;
         public Transform box;
         bool isbutton;
         public GameObject manager;
@@ -28,8 +29,9 @@ namespace Holojam.IO {
             isbutton = false;
             A = new Vector4();
             B = new Vector4();
+            center = new Vector4();
             radius = 1.0f;
-            hypermesh = new HyperCubeMesh();
+            hypermesh = new HyperCubeMesh(center);
             vertices = new Vector3[8];
             hyperface = new int[] {       1,3,5,7,9,11,13,15,
                                           0,2,4,6,8,10,12,14,
@@ -106,6 +108,22 @@ namespace Holojam.IO {
             mesh.RecalculateBounds();
             mesh.Optimize();
             GetComponent<MeshFilter>().mesh = mesh;
+        }
+        public void Renew() {
+
+            hypermesh = new HyperCubeMesh(center);
+            vertices = new Vector3[8];
+            for (int i = 0; i < 8; i++) {
+                vertices[i] = hypermesh.get3dver(hyperface[i + faceindex * 8]);
+            }
+
+            mesh = new Mesh();
+            mesh.vertices = vertices;
+            mesh.SetIndices(faces, MeshTopology.Quads, 0);
+            mesh.RecalculateBounds();
+            mesh.Optimize();
+            GetComponent<MeshFilter>().mesh = mesh;
+            UpdateRotation(hypermesh);
         }
         public void OnGlobalTriggerPressDown(ViveEventData eventData) {
             isbutton = true;

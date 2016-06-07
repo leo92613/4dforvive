@@ -26,9 +26,9 @@ namespace Holojam.IO {
                         }
            // Debug.Log("init is finished");
         }
-        public HyperCubeMesh(Vector4 root, Vector4 A_) {
-            Debug.Log(A_);
-            center = root + A_;
+        public HyperCubeMesh( Vector4 A_) {
+           // Debug.Log(A_);
+            center = A_;
             srcVertices = new Vector4[16];
             vertices = new Vector4[16];
             int n = 0;
@@ -39,7 +39,7 @@ namespace Holojam.IO {
                             vertices[n] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) + center;
                             srcVertices[n++] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) +center;
                         }
-                Debug.Log("Re-init is done!");
+               // Debug.Log("Re-init is done!");
             }
         
         public Vector3 get3dver(int i) {
@@ -59,6 +59,7 @@ namespace Holojam.IO {
     public class Hypermesh : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler
         {
         public Transform box;
+        public GameObject[] neighborcubes;
         public Vector3 A_;
         public Vector3 B_;
         public Vector4 A, B;
@@ -96,8 +97,15 @@ namespace Holojam.IO {
             B_ = B2;
             B = B1;
         }
+       public void Reg(GameObject root) {
+            for (int i = 0; i < 8; i++)
+                if (center + manager.GetComponent<Manager>().neighbors[i] == root.GetComponent<Hypermesh>().center)
+                    neighborcubes[i] = root;
+
+        }
        public void Init(Vector4 A_) {
-            cube = new HyperCubeMesh(center,A_);
+            center = A_;
+            cube = new HyperCubeMesh(A_);
             A = new Vector4();
             /*
             Vector3 relapos = new Vector3();
@@ -114,14 +122,14 @@ namespace Holojam.IO {
             */
             UpdateRotation(cube);
             A = B;
-            Debug.Log("Init finished");
+            //Debug.Log("Init finished");
 
         }
 
         void Awake()
         {
            // box = this.GetComponent<Transform>();
-            cube = new HyperCubeMesh(center,center);
+            cube = new HyperCubeMesh(center);
             #region Faces
             faces = new int[] {4,0,8,12,
             6,2,10,14,
@@ -183,7 +191,8 @@ namespace Holojam.IO {
             A = new Vector4();
             B = new Vector4();
             radius = 1.0f;
-            Debug.Log("Awaken");
+            neighborcubes = new GameObject[8];
+           // Debug.Log("Awaken");
         }
 
        public void UpdateRotation(HyperCubeMesh cube) {
