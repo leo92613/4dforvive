@@ -13,6 +13,7 @@ namespace Holojam.IO {
         [SerializeField]
         Vector4 A, B;
         Vector2 touch;
+        public Material[] mat;
         public Transform box;
         bool isbutton;
         public Trackball trackball;
@@ -39,6 +40,7 @@ namespace Holojam.IO {
         }
 
         void Start() {
+            root.GetComponent<Renderer>().material = mat[1];
             toggle = 0;
             trackball = new Trackball(4);
             A_ = new Vector3();
@@ -52,8 +54,7 @@ namespace Holojam.IO {
         // Update is called once per frame
         void Create(Vector4 _A) {
             GameObject meshClone = (GameObject)Instantiate(initmesh, box.position,box.rotation);
-            meshClone.GetComponent<Transform>().parent = box;
-            
+            meshClone.GetComponent<Transform>().parent = box;            
             root.GetComponent<Hypermesh>().neighborcubes[toggle] = meshClone;
             meshClone.GetComponent<Transform>().localScale = new Vector3(1f/0.75f, 1f/0.75f, 1f/0.75f);
             meshClone.GetComponent<Hypermesh>().box = box;
@@ -146,10 +147,17 @@ namespace Holojam.IO {
             //throw new NotImplementedException();
         }
         public void OnGlobalTouchpadPressUp(ViveEventData eventData) {
-            if (root.GetComponent<Hypermesh>().neighborcubes[toggle] == null)
-                Create(root.GetComponent<Hypermesh>().center+neighbors[toggle]);
-            else {
+            if (root.GetComponent<Hypermesh>().neighborcubes[toggle] == null) {
+                Create(root.GetComponent<Hypermesh>().center + neighbors[toggle]);
+                root.GetComponent<Renderer>().material = mat[0];
                 root = root.GetComponent<Hypermesh>().neighborcubes[toggle];
+                root.GetComponent<Renderer>().material = mat[1];
+                hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
+                hyperface.GetComponent<Hyperface>().Renew();
+            } else {
+                root.GetComponent<Renderer>().material = mat[0];
+                root = root.GetComponent<Hypermesh>().neighborcubes[toggle];
+                root.GetComponent<Renderer>().material = mat[1];
                 hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
                 hyperface.GetComponent<Hyperface>().Renew();
             }
