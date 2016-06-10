@@ -93,7 +93,10 @@ namespace Holojam.IO {
           //  mesh.uv = uvs;
             mesh.RecalculateBounds();
             mesh.Optimize();
-            GetComponent<MeshFilter>().mesh = mesh;
+            mesh.SetTriangles(mesh.GetTriangles(0), 0);
+            //GetComponent<MeshFilter>().mesh = mesh;
+            GetComponent<MeshCollider>().sharedMesh = null;
+            GetComponent<MeshCollider>().sharedMesh = mesh;
         }
 
        public void Setup( Vector3 B2, Vector4 B1) {
@@ -186,7 +189,9 @@ namespace Holojam.IO {
             mesh.SetIndices(faces, MeshTopology.Quads, 0);
             mesh.RecalculateBounds();
             mesh.Optimize();
+            mesh.SetTriangles(mesh.GetTriangles(0), 0);
             GetComponent<MeshFilter>().mesh = mesh;
+            GetComponent<MeshCollider>().sharedMesh = mesh;
             //trackball = new Trackball(4);
             A_ = new Vector3();
             B_ = new Vector3();
@@ -218,9 +223,9 @@ namespace Holojam.IO {
                 cube.updatepoint4(dst, i);
             }
             center_ = center_ / 16f;
-            GetComponent<BoxCollider>().center = (new Vector3(center_.x, center_.y, center_.z));
-            Mesh tmp = new Mesh();
-            updatevertices(tmp);
+            //GetComponent<BoxCollider>().center = (new Vector3(center_.x, center_.y, center_.z));
+            //Mesh tmp = new Mesh();
+            updatevertices(mesh);
             
         }
 
@@ -300,6 +305,9 @@ namespace Holojam.IO {
            // throw new NotImplementedException();
         }
 
+        public void Explode() {
+            Destroy(gameObject, 5);
+        }
 
     }
 }

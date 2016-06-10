@@ -102,12 +102,12 @@ namespace Holojam.IO {
             }
 
 
-            mesh = new Mesh();
+            //mesh = new Mesh();
             mesh.vertices = vertices;
             mesh.SetIndices(faces, MeshTopology.Quads, 0);
             mesh.RecalculateBounds();
             mesh.Optimize();
-            GetComponent<MeshFilter>().mesh = mesh;
+           // GetComponent<MeshFilter>().mesh = mesh;
         }
         public void Renew() {
 
@@ -117,12 +117,12 @@ namespace Holojam.IO {
                 vertices[i] = hypermesh.get3dver(hyperface[i + faceindex * 8]);
             }
 
-            mesh = new Mesh();
+            //mesh = new Mesh();
             mesh.vertices = vertices;
             mesh.SetIndices(faces, MeshTopology.Quads, 0);
             mesh.RecalculateBounds();
             mesh.Optimize();
-            GetComponent<MeshFilter>().mesh = mesh;
+            //GetComponent<MeshFilter>().mesh = mesh;
             UpdateRotation(hypermesh);
         }
         public void OnGlobalTriggerPressDown(ViveEventData eventData) {

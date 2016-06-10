@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using System;
 
@@ -23,12 +24,18 @@ namespace Holojam.IO {
         public GameObject initmesh;
         public Hyperface hyperface;
         float radius;
+        bool isscale;
        // public int[] hyperface;
         public HyperCubeMesh hypermesh;
         [SerializeField] Vector3 movement;
         // Use this for initialization
         public Vector3[] vertices;
         public Vector4[] neighbors;
+        Vector3 left,boxscale;
+        float distance;
+
+        List<GameObject> cloneList;
+
         void Awake() {
             neighbors = new Vector4[8];
             neighbors[0] = new Vector4(1, 0, 0, 0) * 0.175f *2f;
@@ -39,6 +46,8 @@ namespace Holojam.IO {
             neighbors[5] = new Vector4(0, 0, -1, 0) * 0.175f * 2f;
             neighbors[6] = new Vector4(0, 0, 0, 1) * 0.175f * 2f;
             neighbors[7] = new Vector4(0, 0, 0, -1) * 0.175f * 2f;
+
+            cloneList = new List<GameObject>();
         }
 
         void Start() {
@@ -56,6 +65,7 @@ namespace Holojam.IO {
         // Update is called once per frame
         void Create(Vector4 _A) {
             GameObject meshClone = (GameObject)Instantiate(initmesh, box.position,box.rotation);
+            cloneList.Add(meshClone);
             meshClone.GetComponent<Transform>().parent = box;            
             root.GetComponent<Hypermesh>().children[toggle] = meshClone;
             meshClone.GetComponent<Transform>().localScale = new Vector3(1f, 1f, 1f);
@@ -67,6 +77,16 @@ namespace Holojam.IO {
             meshClone.GetComponent<Hypermesh>().Reg(root);
         }
 
+        public void Explode() {
+            foreach (GameObject meshClone in cloneList) {
+
+                meshClone.GetComponent<Rigidbody>().AddForce(UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10), UnityEngine.Random.Range(-10, 10));
+                meshClone.GetComponent<Rigidbody>().isKinematic = false;
+                meshClone.GetComponent<Hypermesh>().Explode();
+            }
+            cloneList = new List<GameObject>();
+        }
+
         public void UpdateRotation(Trackball trackball, Vector4 A_, Vector4 B_) {
 
             float[] A = new float[4] { A_.x, A_.y, A_.z, A_.w };
@@ -74,6 +94,18 @@ namespace Holojam.IO {
 
             trackball.rotate(A, B);
 
+        }
+
+        public void setissalce(bool foo) {
+            isscale = foo;
+        }
+
+        public void setleft(Vector3 foo) {
+            left = foo;
+        }
+
+        public void setscale() {
+            boxscale = box.localScale;
         }
 
         void Update() {
@@ -99,17 +131,34 @@ namespace Holojam.IO {
             }
         }
         public void OnGlobalGripPressDown(ViveEventData eventData) {
-            movement = new Vector3();
-            movement = ball.position - eventData.module.transform.position;
+            if (isscale) {
+                distance = Vector3.Distance(left, eventData.module.transform.position);
+
+            } else {
+                movement = new Vector3();
+                movement = ball.position - eventData.module.transform.position;
+            }
         }
 
         public void OnGlobalGripPress(ViveEventData eventData) {
+          if (isscale) {
+                float distance_ = Vector3.Distance(left, eventData.module.transform.position);
+                if (distance_ / distance > 10) {
+                    box.localScale = box.localScale * 1;
+                } else if (distance_ / distance < 0.3) {
+                    box.localScale = box.localScale * 1;
+                } else {
+                    box.localScale = boxscale * (distance_ / distance);
+                }
+
+            }
           //  box.position = eventData.module.transform.position + movement;
 
         }
 
         public void OnGlobalGripPressUp(ViveEventData eventData) {
-
+            if (isscale)
+                setscale();
         }
 
         public void OnGlobalTriggerPressDown(ViveEventData eventData) {

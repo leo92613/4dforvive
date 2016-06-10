@@ -3,13 +3,14 @@ using System.Collections;
 using System;
 
 namespace Holojam.IO {
-    public class LeftManager : ViveGlobalReceiver, IGlobalTriggerHandler {
+    public class LeftManager : ViveGlobalReceiver, IGlobalTriggerHandler, IGlobalGripHandler, IGlobalApplicationMenuPressDownHandler {
         LineRenderer line;
         public GameObject rightcontroller;
         public Transform trackball;
         Manager right;
         RaycastHit hit;
         GameObject tmp;
+        public GameObject root;
         bool chosen;
         public void OnGlobalTriggerPress(ViveEventData eventData) {
             right.root.GetComponent<Renderer>().material = right.mat[0];
@@ -83,6 +84,28 @@ namespace Holojam.IO {
         // Update is called once per frame
         void Update() {
 
+        }
+
+        public void OnGlobalGripPressDown(ViveEventData eventData) {
+            right.setscale();
+            right.setleft(eventData.module.transform.position);
+            right.setissalce(true);
+        }
+
+        public void OnGlobalGripPress(ViveEventData eventData) {
+            right.setleft(eventData.module.transform.position);
+
+        }
+
+        public void OnGlobalGripPressUp(ViveEventData eventData) {
+            right.setissalce(false);
+        }
+
+        public void OnGlobalApplicationMenuPressDown(ViveEventData eventData) {
+            right.Explode();
+            right.root = root;
+            right.hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
+            right.hyperface.GetComponent<Hyperface>().Renew();
         }
     }
 }
