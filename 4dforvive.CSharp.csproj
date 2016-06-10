@@ -81,6 +81,7 @@
     <Compile Include="Assets\FourDshape2.cs" />
     <Compile Include="Assets\Hyperface.cs" />
     <Compile Include="Assets\Hypermesh.cs" />
+    <Compile Include="Assets\LeftManager.cs" />
     <Compile Include="Assets\Manager.cs" />
     <Compile Include="Assets\OneModuleGrabbable.cs" />
     <Compile Include="Assets\PoseToColorChanger.cs" />

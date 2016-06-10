@@ -56,14 +56,17 @@ namespace Holojam.IO {
         }
     }
 
+
     public class Hypermesh : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler
         {
         public Transform box;
-        public GameObject[] neighborcubes;
+        public GameObject[] children;
         public Vector3 A_;
         public Vector3 B_;
         public Vector4 A, B;
         public Vector4 center = new Vector4(0f,0f,0f,0f);
+        public Vector4 center_;
+        public GameObject parent;
         bool isbutton;
         public GameObject manager;
         float radius;
@@ -98,13 +101,13 @@ namespace Holojam.IO {
             B = B1;
         }
        public void Reg(GameObject root) {
-            for (int i = 0; i < 8; i++)
-                if (center + manager.GetComponent<Manager>().neighbors[i] == root.GetComponent<Hypermesh>().center)
-                    neighborcubes[i] = root;
+            parent = root;
 
         }
        public void Init(Vector4 A_) {
+
             center = A_;
+          //  center_ = center;
             cube = new HyperCubeMesh(A_);
             A = new Vector4();
             /*
@@ -191,13 +194,13 @@ namespace Holojam.IO {
             A = new Vector4();
             B = new Vector4();
             radius = 1.0f;
-            neighborcubes = new GameObject[8];
+            children = new GameObject[8];
            // Debug.Log("Awaken");
         }
 
        public void UpdateRotation(HyperCubeMesh cube) {
 
-
+            center_ = new Vector4();
             for (int i = 0; i < 16; i++) {
 
                 float[] src = new float[4];
@@ -208,9 +211,14 @@ namespace Holojam.IO {
                 float[] dst = new float[4];
 
                 manager.GetComponent<Manager>().trackball.transform(src, dst);
-
+                center_.x += dst[0];
+                center_.y += dst[1];
+                center_.z += dst[2];
+                center_.w += dst[3];
                 cube.updatepoint4(dst, i);
             }
+            center_ = center_ / 16f;
+            GetComponent<BoxCollider>().center = (new Vector3(center_.x, center_.y, center_.z));
             Mesh tmp = new Mesh();
             updatevertices(tmp);
             

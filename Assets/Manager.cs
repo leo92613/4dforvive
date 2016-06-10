@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using System;
 
 namespace Holojam.IO {
-    public class Manager : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler, IGlobalTouchpadPressUpHandler , IGlobalTouchpadTouchSetHandler{
+    public class Manager : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler, IGlobalTouchpadPressUpHandler , IGlobalTouchpadTouchSetHandler, IGlobalApplicationMenuPressDownHandler{
         [SerializeField]
         int toggle;
         [SerializeField]
@@ -15,6 +16,7 @@ namespace Holojam.IO {
         Vector2 touch;
         public Material[] mat;
         public Transform box;
+        public Transform ball;
         bool isbutton;
         public Trackball trackball;
         public GameObject root;
@@ -55,9 +57,9 @@ namespace Holojam.IO {
         void Create(Vector4 _A) {
             GameObject meshClone = (GameObject)Instantiate(initmesh, box.position,box.rotation);
             meshClone.GetComponent<Transform>().parent = box;            
-            root.GetComponent<Hypermesh>().neighborcubes[toggle] = meshClone;
-            meshClone.GetComponent<Transform>().localScale = new Vector3(1f/0.75f, 1f/0.75f, 1f/0.75f);
-            meshClone.GetComponent<Hypermesh>().box = box;
+            root.GetComponent<Hypermesh>().children[toggle] = meshClone;
+            meshClone.GetComponent<Transform>().localScale = new Vector3(1f, 1f, 1f);
+            meshClone.GetComponent<Hypermesh>().box = ball;
             meshClone.GetComponent<Hypermesh>().manager = this.gameObject;     
             meshClone.GetComponent<Hypermesh>().module = module;
             meshClone.GetComponent<Hypermesh>().Setup(B_,B);
@@ -75,17 +77,21 @@ namespace Holojam.IO {
         }
 
         void Update() {
+            if (Input.GetKeyDown(KeyCode.Space)) {
+                Debug.Log(root.GetComponent<Hypermesh>().center);
+            }
 
             if (isbutton) {
                 Vector3 relapos = new Vector3();
-                relapos = (B_ - box.position) * 8f / 3f;
+                relapos = (B_ - ball.position) * 8f / 3f;
                 float r = (float)Math.Sqrt(relapos.x * relapos.x + relapos.y * relapos.y + relapos.z * relapos.z);
                 if (r < radius) {
                     B = new Vector4(relapos.x, relapos.y, relapos.z, (float)Math.Sqrt(radius * radius - relapos.x * relapos.x - relapos.y * relapos.y - relapos.z * relapos.z));
                 } else {
                     //float length = relapos.magnitude;
                     Vector3 Q = (radius / r) * relapos;
-                    relapos = Q + box.position;
+                    relapos = Q + ball.position;
+                  //  Debug.Log(relapos);
                     B = new Vector4(Q.x, Q.y, Q.z, 0f);
                 }
                 UpdateRotation(trackball, A, B);
@@ -94,7 +100,7 @@ namespace Holojam.IO {
         }
         public void OnGlobalGripPressDown(ViveEventData eventData) {
             movement = new Vector3();
-            movement = box.position - eventData.module.transform.position;
+            movement = ball.position - eventData.module.transform.position;
         }
 
         public void OnGlobalGripPress(ViveEventData eventData) {
@@ -110,7 +116,7 @@ namespace Holojam.IO {
             isbutton = true;
             B_ = eventData.module.transform.position;
             Vector3 relapos = new Vector3();
-            relapos = (B_ - box.position) * 8f / 3f;
+            relapos = (B_ - ball.position) * 8f / 3f;
             float r = (float)Math.Sqrt(relapos.x * relapos.x + relapos.y * relapos.y + relapos.z * relapos.z);
             if (r < radius) {
                 B = new Vector4(relapos.x, relapos.y, relapos.z, (float)Math.Sqrt(radius * radius - relapos.x * relapos.x - relapos.y * relapos.y - relapos.z * relapos.z));
@@ -147,22 +153,25 @@ namespace Holojam.IO {
             //throw new NotImplementedException();
         }
         public void OnGlobalTouchpadPressUp(ViveEventData eventData) {
-            if (root.GetComponent<Hypermesh>().neighborcubes[toggle] == null) {
+            if (root.GetComponent<Hypermesh>().children[toggle] == null) {
                 Create(root.GetComponent<Hypermesh>().center + neighbors[toggle]);
                 root.GetComponent<Renderer>().material = mat[0];
-                root = root.GetComponent<Hypermesh>().neighborcubes[toggle];
+                root = root.GetComponent<Hypermesh>().children[toggle];
                 root.GetComponent<Renderer>().material = mat[1];
                 hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
                 hyperface.GetComponent<Hyperface>().Renew();
             } else {
                 root.GetComponent<Renderer>().material = mat[0];
-                root = root.GetComponent<Hypermesh>().neighborcubes[toggle];
+                root = root.GetComponent<Hypermesh>().children[toggle];
                 root.GetComponent<Renderer>().material = mat[1];
                 hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
                 hyperface.GetComponent<Hyperface>().Renew();
             }
         }
-
+        public void Sethyperface() {
+            hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
+            hyperface.GetComponent<Hyperface>().Renew();
+        }
         void IGlobalTouchpadTouchDownHandler.OnGlobalTouchpadTouchDown(ViveEventData eventData) {
             touch = eventData.touchpadAxis;
         }
@@ -181,6 +190,12 @@ namespace Holojam.IO {
         }
         void IGlobalTouchpadTouchUpHandler.OnGlobalTouchpadTouchUp(ViveEventData eventData) {
             //throw new NotImplementedException();
+        }
+
+        void IGlobalApplicationMenuPressDownHandler.OnGlobalApplicationMenuPressDown(ViveEventData eventData) {
+            //Debug.Log("reload");
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
         }
     }
 }
