@@ -104,7 +104,7 @@ namespace Holojam.IO {
         public void OnGlobalApplicationMenuPressDown(ViveEventData eventData) {
             right.Explode();
             right.root = root;
-            right.hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
+            right.hyperface.GetComponent<Hyperface>().center = right.root.GetComponent<Hypermesh>().center;
             right.hyperface.GetComponent<Hyperface>().Renew();
         }
     }
