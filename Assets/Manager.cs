@@ -8,32 +8,32 @@ namespace Holojam.IO {
     public class Manager : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler, IGlobalTouchpadPressUpHandler , IGlobalTouchpadTouchSetHandler, IGlobalApplicationMenuPressDownHandler{
         [SerializeField]
         int toggle;
-        [SerializeField]
         Vector3 A_;
-        [SerializeField]
         Vector3 B_;
-        [SerializeField]
         Vector4 A, B;
         Vector2 touch;
         public Material[] mat;
         public Transform box;
         public Transform ball;
+        public Transform _trackball;
         bool isbutton;
+        public bool buttondown = false;
         public Trackball trackball;
         public GameObject root;
         public GameObject initmesh;
         public Hyperface hyperface;
         float radius;
         bool isscale;
-       // public int[] hyperface;
+        //public int[] hyperface;
         public HyperCubeMesh hypermesh;
-        [SerializeField] Vector3 movement;
+        Vector3 movement;
         // Use this for initialization
         public Vector3[] vertices;
         public Vector4[] neighbors;
         Vector3 left,boxscale;
         float distance;
-
+        LeftManager leftmanager;
+        public GameObject leftcontroller;
         List<GameObject> cloneList;
 
         void Awake() {
@@ -48,6 +48,8 @@ namespace Holojam.IO {
             neighbors[7] = new Vector4(0, 0, 0, -1) * 0.175f * 2f;
 
             cloneList = new List<GameObject>();
+            leftmanager = leftcontroller.GetComponent<LeftManager>();
+
         }
 
         void Start() {
@@ -105,6 +107,9 @@ namespace Holojam.IO {
         }
 
         public void setscale() {
+            // radius = radius* box.localScale.x / boxscale.x ;
+           // Debug.Log("radius " + radius);
+            //Debug.Log("Scale" + box.localScale.x / boxscale.x);
             boxscale = box.localScale;
         }
 
@@ -133,6 +138,8 @@ namespace Holojam.IO {
         public void OnGlobalGripPressDown(ViveEventData eventData) {
             if (isscale) {
                 distance = Vector3.Distance(left, eventData.module.transform.position);
+                if (distance < 0.001)
+                    distance = 1;
 
             } else {
                 movement = new Vector3();
@@ -143,13 +150,29 @@ namespace Holojam.IO {
         public void OnGlobalGripPress(ViveEventData eventData) {
           if (isscale) {
                 float distance_ = Vector3.Distance(left, eventData.module.transform.position);
-                if (distance_ / distance > 10) {
-                    box.localScale = box.localScale * 1;
-                } else if (distance_ / distance < 0.3) {
-                    box.localScale = box.localScale * 1;
+                Debug.Log(distance);
+                Debug.Log(ball.lossyScale);
+                if (distance_ / distance > 1) {
+                    if (box.localScale.x > 10)
+                        box.localScale = box.localScale * 1;
+                    else {
+                        box.localScale = boxscale * (distance_ / distance);
+                        radius = 1f * (box.lossyScale.x / 1f);
+                       // Vector3 tmp = new Vector3(0.6f, 0.6f, 0.6f);
+                       // ball.localScale = tmp * (1f / box.lossyScale.x);
+                    }
                 } else {
-                    box.localScale = boxscale * (distance_ / distance);
-                }
+                    if (box.localScale.x < 0.2)
+                        box.localScale = box.localScale * 1;
+                    else {
+
+                        box.localScale = boxscale * (distance_ / distance);
+                        radius = 1f * (box.lossyScale.x / 1f);
+                       // Vector3 tmp = new Vector3(0.6f, 0.6f, 0.6f);
+                       // ball.localScale = tmp * (1f / box.lossyScale.x);
+                    }
+
+                    }
 
             }
           //  box.position = eventData.module.transform.position + movement;
@@ -159,6 +182,8 @@ namespace Holojam.IO {
         public void OnGlobalGripPressUp(ViveEventData eventData) {
             if (isscale)
                 setscale();
+            buttondown = false;
+            leftmanager.buttondown = false;
         }
 
         public void OnGlobalTriggerPressDown(ViveEventData eventData) {
@@ -188,6 +213,8 @@ namespace Holojam.IO {
             A_ = eventData.module.transform.position;
             B_ = eventData.module.transform.position;
             // Debug.Log("Trigger Pressed up");
+            buttondown = false;
+            leftmanager.buttondown = false;
         }
 
         public void OnGlobalTriggerTouchDown(ViveEventData eventData) {
@@ -216,6 +243,8 @@ namespace Holojam.IO {
                 hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
                 hyperface.GetComponent<Hyperface>().Renew();
             }
+            buttondown = false;
+            leftmanager.buttondown = false;
         }
         public void Sethyperface() {
             hyperface.GetComponent<Hyperface>().center = root.GetComponent<Hypermesh>().center;
@@ -239,6 +268,8 @@ namespace Holojam.IO {
         }
         void IGlobalTouchpadTouchUpHandler.OnGlobalTouchpadTouchUp(ViveEventData eventData) {
             //throw new NotImplementedException();
+            buttondown = false;
+            leftmanager.buttondown = false;
         }
 
         void IGlobalApplicationMenuPressDownHandler.OnGlobalApplicationMenuPressDown(ViveEventData eventData) {

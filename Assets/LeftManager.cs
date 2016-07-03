@@ -3,15 +3,17 @@ using System.Collections;
 using System;
 
 namespace Holojam.IO {
-    public class LeftManager : ViveGlobalReceiver, IGlobalTriggerHandler, IGlobalGripHandler, IGlobalApplicationMenuPressDownHandler {
+    public class LeftManager : ViveGlobalReceiver, IGlobalTriggerHandler, IGlobalGripHandler, IGlobalApplicationMenuHandler {
         LineRenderer line;
         public GameObject rightcontroller;
         public Transform trackball;
         Manager right;
         RaycastHit hit;
         GameObject tmp;
+        public bool buttondown = false;
         public GameObject root;
         bool chosen;
+
         public void OnGlobalTriggerPress(ViveEventData eventData) {
             right.root.GetComponent<Renderer>().material = right.mat[0];
             Ray choose = new Ray(eventData.module.transform.position, eventData.module.transform.forward);
@@ -55,6 +57,8 @@ namespace Holojam.IO {
             } else {
                 right.root.GetComponent<Renderer>().material = right.mat[1];
             }
+            buttondown = false;
+            right.buttondown = false;
         }
 
         public void OnGlobalTriggerTouch(ViveEventData eventData) {
@@ -99,13 +103,25 @@ namespace Holojam.IO {
 
         public void OnGlobalGripPressUp(ViveEventData eventData) {
             right.setissalce(false);
+            buttondown = false;
+            right.buttondown = false;
         }
 
         public void OnGlobalApplicationMenuPressDown(ViveEventData eventData) {
             right.Explode();
             right.root = root;
+            right.root.GetComponent<Renderer>().material = right.mat[1];
             right.hyperface.GetComponent<Hyperface>().center = right.root.GetComponent<Hypermesh>().center;
             right.hyperface.GetComponent<Hyperface>().Renew();
+        }
+
+        public void OnGlobalApplicationMenuPress(ViveEventData eventData) {
+            throw new NotImplementedException();
+        }
+
+        public void OnGlobalApplicationMenuPressUp(ViveEventData eventData) {
+            buttondown = false;
+            right.buttondown = false;
         }
     }
 }
