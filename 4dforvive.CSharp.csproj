@@ -79,6 +79,7 @@
     <Compile Include="Assets\FourDWiiMoteReceiver.cs" />
     <Compile Include="Assets\FourDshape1.cs" />
     <Compile Include="Assets\FourDshape2.cs" />
+    <Compile Include="Assets\GameCube.cs" />
     <Compile Include="Assets\Hyperface.cs" />
     <Compile Include="Assets\Hypermesh.cs" />
     <Compile Include="Assets\LeftManager.cs" />
