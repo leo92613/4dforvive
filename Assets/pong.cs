@@ -4,6 +4,7 @@ namespace Holojam.IO {
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     public class pong : MonoBehaviour {
+        float scalefactor = 0.1f;
         Vector4[] srcVertices, vertices;
         Vector4 center = new Vector4(0, 0, 0, 0);
         int[] faces = new int[] {4,0,8,12,
@@ -30,6 +31,15 @@ namespace Holojam.IO {
             9,8,10,11,
             5,4,6,7,
             13,12,14,15};
+        Mesh mesh;
+        [SerializeField]
+        Vector4 speed;
+        [SerializeField]
+        Vector4 pos = new Vector4();
+        float X, Y, Z, W;
+
+
+// Methods
         public void initvertices(Vector4 A_) {
             srcVertices = new Vector4[16];
             vertices = new Vector4[16];
@@ -38,8 +48,8 @@ namespace Holojam.IO {
                 for (int j = -1; j <= 1; j += 2)
                     for (int k = -1; k <= 1; k += 2)
                         for (int l = -1; l <= 1; l += 2) {
-                            vertices[n] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) + center;
-                            srcVertices[n++] = new Vector4((float)l * 0.175f, (float)k * 0.175f, (float)j * 0.175f, (float)i * 0.175f) + center;
+                            vertices[n] = new Vector4((float)l * scalefactor, (float)k * scalefactor, (float)j * scalefactor, (float)i * scalefactor) + center;
+                            srcVertices[n++] = new Vector4((float)l * scalefactor, (float)k * scalefactor, (float)j * scalefactor, (float)i * scalefactor) + center;
                         }
         }
 
@@ -72,28 +82,116 @@ namespace Holojam.IO {
             mesh.RecalculateBounds();
             mesh.Optimize();
             mesh.SetTriangles(mesh.GetTriangles(0), 0);
-        }
-        public void move(Vector4 movement) {
-            for (int i = 0; i< 16; i++) {
-                vertices[i] += movement;
-            }
-
-        }
-
-
-        Mesh mesh;
-        // Use this for initialization
-        void Start() {
-            mesh = new Mesh();
-            setupmesh(mesh);
             GetComponent<MeshFilter>().mesh = mesh;
             GetComponent<MeshCollider>().sharedMesh = null;
             GetComponent<MeshCollider>().sharedMesh = mesh;
         }
+        public void move(Vector4 movement) {
+            for (int i = 0; i < 16; i++) {
+                vertices[i] = srcVertices[i]+movement;
+            }
+        }
+            void changespeed(Vector4 _speed) {
+                speed += _speed;
+            }
+            void checkboundary(Vector4 _pos) {
+
+                 Debug.Log(vertices[1]);
+            bool isout = false;
+                if (_pos.x > X) {
+                    pos.x = 2 * X - _pos.x;
+                    changespeed(new Vector4(2 * (-speed.x), 0, 0, 0));
+                    isout = true;
+                }
+                if (_pos.x < -X) {
+                    pos.x = 2 * (-X) - _pos.x;
+                    changespeed(new Vector4(2 * (-speed.x), 0, 0, 0));
+                }
+                if (_pos.x >= -X && _pos.x <= X)
+                    pos.x = _pos.x;
+                if (_pos.y > Y) {
+                    pos.y = 2 * Y - _pos.y;
+                    changespeed(new Vector4(0, 2 * (-speed.y), 0, 0));
+                    isout = true;
+                }
+                if (_pos.y < -Y) {
+                    pos.y = 2 * (-Y) - _pos.y;
+                    changespeed(new Vector4(0, 2 * (-speed.y), 0, 0));
+                    isout = true;
+                }
+                if (_pos.y >= -Y && _pos.y <= Y)
+                    pos.y = _pos.y;
+                if (_pos.z > Z) {
+                    pos.z = 2 * Z - _pos.z;
+                    changespeed(new Vector4(0, 0, 2 * (-speed.z), 0));
+                    isout = true;
+                }
+                if (_pos.z < -Z) {
+                    pos.z = 2 * (-Z) - _pos.z;
+                    changespeed(new Vector4(0, 0, 2 * (-speed.z), 0));
+                    isout = true;
+                }
+                if (_pos.z >= -Z && _pos.z <= Z)
+                    pos.z = _pos.z;
+                if (_pos.w > W) {
+                    pos.w = 2 * W - _pos.w;
+                    changespeed(new Vector4(0, 0, 0, 2 * (-speed.w)));
+                    isout = true;
+                }
+                if (_pos.w < -W) {
+                    pos.w = 2 * (-W) - _pos.w;
+                    changespeed(new Vector4(0, 0, 0, 2 * (-speed.w)));
+                    isout = true;
+                }
+                if (_pos.w >= -W && _pos.w <= W)
+                    pos.w = _pos.w;
+
+                if (isout)
+                    StartCoroutine(pulse());
+
+            }
+        void initspeed() {
+                float x, y, z, w;
+                x = Random.Range(0.1f, 0.5f);
+                y = Random.Range(0.1f, 0.5f);
+                z = Random.Range(0.1f, 0.5f);
+                w = Random.Range(0.1f, 0.5f);
+                speed = new Vector4(x, y, z, w);
+            }
+            IEnumerator pulse() {
+                SteamVR_Controller.Input(2).TriggerHapticPulse(500);
+                yield return null;
+            }
+
+        
+
+
+
+        // Use this for initialization
+        void Start() {
+            mesh = new Mesh();
+            setupmesh(mesh);
+            X = 1f;
+            Y = 1f;
+            Z = 1f;
+            W = 1f;
+            initspeed();
+
+        }
 
         // Update is called once per frame
         void Update() {
-
+            //float x = Random.Range(0.1f, 0.5f);
+            //float y = Random.Range(0.1f, 0.5f);
+            // float z = Random.Range(0.1f, 0.5f);
+            // float w = Random.Range(0.1f, 0.5f);
+            // Vector4 speed = new Vector4(x, y, z, w);
+            Vector4 tmp = new Vector4();
+            tmp = pos + speed * Time.deltaTime;
+            //Debug.Log(tmp);
+            checkboundary(tmp);
+            move(pos);
+            setupmesh(mesh);
         }
     }
 }
