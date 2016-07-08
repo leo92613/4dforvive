@@ -13,7 +13,7 @@ namespace Holojam.IO {
         public Vector4[] srcVertices;
         public Vector4[] vertices;
         public Vector4 center = new Vector4(0,0,0,0);
-    public HyperCubeMesh (){
+        public HyperCubeMesh (){
             srcVertices = new Vector4[16];
             vertices = new Vector4[16];
             int n = 0;

@@ -181,6 +181,7 @@
     <Compile Include="Assets\_MK\_MKGlowSystem\_Demo\Code\MK_RotateObject.cs" />
     <Compile Include="Assets\_MK\_MKGlowSystem\_Internal\MKGlow.cs" />
     <Compile Include="Assets\_MK\_MKGlowSystem\_Internal\MKGlowSystemHelpWindow.cs" />
+    <Compile Include="Assets\pong.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\Mobile-Particle-Alpha.shader" />
