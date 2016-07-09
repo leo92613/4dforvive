@@ -24,6 +24,7 @@ namespace Holojam.IO {
                5,4,6,7
             };
         public void initvertices() {
+            Vector4 offset = new Vector4(0, 0.5f, 0, 0);
             srcVertices = new Vector4[16];
             vertices = new Vector4[16];
             int n = 0;
@@ -31,8 +32,8 @@ namespace Holojam.IO {
                 for (int j = -1; j <= 1; j += 2)
                     for (int k = -1; k <= 1; k += 2)
                         for (int l = -1; l <= 1; l += 2) {
-                            vertices[n] = new Vector4((float)l, (float)k, (float)j, (float)i);
-                            srcVertices[n++] = new Vector4((float)l, (float)k, (float)j, (float)i);
+                            vertices[n] = new Vector4((float)l, (float)k, (float)j, (float)i) + offset;
+                            srcVertices[n++] = new Vector4((float)l, (float)k, (float)j, (float)i) + offset;
                         }
         }
         public pongface() {
