@@ -206,11 +206,11 @@ namespace Holojam.IO {
             move(pos);
             setupmesh(mesh);
         }
-        void OnCollisionEnter(Collision other) {
+        void OnTriggerEnter(Collider other) {
             if (other.gameObject.tag == "Player") {
-                Debug.Log("HIT!!!!");
+               // Debug.Log("HIT!!!!");
                 StartCoroutine(pulse());
-                hit(other.rigidbody.velocity);
+                hit(other.GetComponent<ShowVelocity>().velocity);
             }
 
         }

@@ -138,6 +138,7 @@
     <Compile Include="Assets\Scripts\server-scripts\UpdateProtocol-Net.cs" />
     <Compile Include="Assets\Scripts\server-scripts\UpdateProtocolV3.cs" />
     <Compile Include="Assets\Scripts\transform-universal\TransformUniversal.cs" />
+    <Compile Include="Assets\ShowVelocity.cs" />
     <Compile Include="Assets\Sources\LightningBolt.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_LaserPointer.cs" />
