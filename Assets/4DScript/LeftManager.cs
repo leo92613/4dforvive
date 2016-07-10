@@ -116,7 +116,7 @@ namespace Holojam.IO {
         }
 
         public void OnGlobalApplicationMenuPress(ViveEventData eventData) {
-            throw new NotImplementedException();
+          //  throw new NotImplementedException();
         }
 
         public void OnGlobalApplicationMenuPressUp(ViveEventData eventData) {

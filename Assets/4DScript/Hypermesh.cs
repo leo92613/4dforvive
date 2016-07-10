@@ -57,7 +57,7 @@ namespace Holojam.IO {
     }
 
 
-    public class Hypermesh : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler
+    public class Hypermesh : ViveGlobalReceiver, IGlobalTriggerPressSetHandler
         {
         public Transform box;
         public GameObject[] children;

@@ -72,18 +72,28 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\FourDHyperCubeVive.cs" />
-    <Compile Include="Assets\FourDManager.cs" />
-    <Compile Include="Assets\FourDManagerVive.cs" />
-    <Compile Include="Assets\FourDShape1Vive.cs" />
-    <Compile Include="Assets\FourDWiiMoteReceiver.cs" />
-    <Compile Include="Assets\FourDshape1.cs" />
-    <Compile Include="Assets\FourDshape2.cs" />
-    <Compile Include="Assets\GameCube.cs" />
-    <Compile Include="Assets\Hyperface.cs" />
-    <Compile Include="Assets\Hypermesh.cs" />
-    <Compile Include="Assets\LeftManager.cs" />
-    <Compile Include="Assets\Manager.cs" />
+    <Compile Include="Assets\4DScript\DemoManagertwo.cs" />
+    <Compile Include="Assets\4DScript\FourDDemoManager.cs" />
+    <Compile Include="Assets\4DScript\FourDHyperCubeVive.cs" />
+    <Compile Include="Assets\4DScript\FourDManager.cs" />
+    <Compile Include="Assets\4DScript\FourDManagerVive.cs" />
+    <Compile Include="Assets\4DScript\FourDManagerthree.cs" />
+    <Compile Include="Assets\4DScript\FourDShape1Vive.cs" />
+    <Compile Include="Assets\4DScript\FourDShapeDemoHypercube.cs" />
+    <Compile Include="Assets\4DScript\FourDShapeDemoone.cs" />
+    <Compile Include="Assets\4DScript\FourDShapeDemotwo.cs" />
+    <Compile Include="Assets\4DScript\FourDWiiMoteReceiver.cs" />
+    <Compile Include="Assets\4DScript\FourDshape1.cs" />
+    <Compile Include="Assets\4DScript\FourDshape2.cs" />
+    <Compile Include="Assets\4DScript\GameCube.cs" />
+    <Compile Include="Assets\4DScript\Header.cs" />
+    <Compile Include="Assets\4DScript\Hyperface.cs" />
+    <Compile Include="Assets\4DScript\Hypermesh.cs" />
+    <Compile Include="Assets\4DScript\LeftManager.cs" />
+    <Compile Include="Assets\4DScript\Manager.cs" />
+    <Compile Include="Assets\4DScript\TwentyFourCell.cs" />
+    <Compile Include="Assets\4DScript\TwentyFourCellVive.cs" />
+    <Compile Include="Assets\4DScript\pong.cs" />
     <Compile Include="Assets\OneModuleGrabbable.cs" />
     <Compile Include="Assets\PoseToColorChanger.cs" />
     <Compile Include="Assets\Room\makeRoom.cs" />
@@ -127,7 +137,6 @@
     <Compile Include="Assets\Scripts\server-scripts\PlayerController.cs" />
     <Compile Include="Assets\Scripts\server-scripts\UpdateProtocol-Net.cs" />
     <Compile Include="Assets\Scripts\server-scripts\UpdateProtocolV3.cs" />
-    <Compile Include="Assets\Scripts\trackballmanager.cs" />
     <Compile Include="Assets\Scripts\transform-universal\TransformUniversal.cs" />
     <Compile Include="Assets\Sources\LightningBolt.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
@@ -162,8 +171,6 @@
     <Compile Include="Assets\SteamVR\Scripts\SteamVR_TrackedObject.cs" />
     <Compile Include="Assets\SteamVR\Scripts\SteamVR_UpdatePoses.cs" />
     <Compile Include="Assets\SteamVR\Scripts\SteamVR_Utils.cs" />
-    <Compile Include="Assets\TwentyFourCell.cs" />
-    <Compile Include="Assets\TwentyFourCellVive.cs" />
     <Compile Include="Assets\TwoModuleScalable.cs" />
     <Compile Include="Assets\UNOShader\Bin\Scripts\UNOShaderData.cs" />
     <Compile Include="Assets\UNOShader\Bin\Scripts\UNOShaderHelper.cs" />
@@ -181,7 +188,6 @@
     <Compile Include="Assets\_MK\_MKGlowSystem\_Demo\Code\MK_RotateObject.cs" />
     <Compile Include="Assets\_MK\_MKGlowSystem\_Internal\MKGlow.cs" />
     <Compile Include="Assets\_MK\_MKGlowSystem\_Internal\MKGlowSystemHelpWindow.cs" />
-    <Compile Include="Assets\pong.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shaders\Mobile-Particle-Alpha.shader" />
