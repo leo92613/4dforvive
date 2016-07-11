@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using System;
 
 namespace Holojam.IO {
@@ -116,7 +115,7 @@ namespace Holojam.IO {
         void Update() {
             if (isbutton) {
                 Vector3 relapos = new Vector3();
-                relapos = (B_ * box.localScale.x/0.8f- ball.position) * 8f / 3f;
+                relapos = (B_ - ball.position) * 8f / 3f;
                 float r = (float)Math.Sqrt(relapos.x * relapos.x + relapos.y * relapos.y + relapos.z * relapos.z);
                 if (r < radius) {
                     B = new Vector4(relapos.x, relapos.y, relapos.z, (float)Math.Sqrt(radius * radius - relapos.x * relapos.x - relapos.y * relapos.y - relapos.z * relapos.z));
@@ -139,7 +138,7 @@ namespace Holojam.IO {
 
             } else {
                 movement = new Vector3();
-                movement = ball.position - eventData.module.transform.position;
+                movement = box.position - eventData.module.transform.position;
             }
         }
 
@@ -153,7 +152,7 @@ namespace Holojam.IO {
                         box.localScale = box.localScale * 1;
                     else {
                         box.localScale = boxscale * (distance_ / distance);
-                       // radius = 1f * (box.lossyScale.x / 1f);
+                        radius = 1f * (box.lossyScale.x / 1f);
                        // Vector3 tmp = new Vector3(0.6f, 0.6f, 0.6f);
                        // ball.localScale = tmp * (1f / box.lossyScale.x);
                     }
@@ -163,7 +162,7 @@ namespace Holojam.IO {
                     else {
 
                         box.localScale = boxscale * (distance_ / distance);
-                        //radius = 1f * (box.lossyScale.x / 1f);
+                        radius = 1f * (box.lossyScale.x / 1f);
                        // Vector3 tmp = new Vector3(0.6f, 0.6f, 0.6f);
                        // ball.localScale = tmp * (1f / box.lossyScale.x);
                     }
@@ -184,7 +183,7 @@ namespace Holojam.IO {
         public void OnGlobalTriggerPressDown(ViveEventData eventData) {
             B_ = eventData.module.transform.position;
             Vector3 relapos = new Vector3();
-            relapos = (B_ * box.localScale.x / 0.8f - ball.position) * 8f / 3f;
+            relapos = (B_ - ball.position) * 8f / 3f;
             float r = (float)Math.Sqrt(relapos.x * relapos.x + relapos.y * relapos.y + relapos.z * relapos.z);
             if (r < radius) {
                 B = new Vector4(relapos.x, relapos.y, relapos.z, (float)Math.Sqrt(radius * radius - relapos.x * relapos.x - relapos.y * relapos.y - relapos.z * relapos.z));

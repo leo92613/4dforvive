@@ -279,6 +279,11 @@
       <param name="rect">Rectangle in which to draw the preview.</param>
       <param name="background">Background image.</param>
     </member>
+    <member name="T:UnityEditor.UI.RectMask2DEditor">
+      <summary>
+        <para>Custom editor for the RectMask2d component.</para>
+      </summary>
+    </member>
     <member name="T:UnityEditor.UI.ScrollbarEditor">
       <summary>
         <para>Custom Editor for the Scrollbar Component.</para>

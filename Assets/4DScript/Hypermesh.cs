@@ -250,19 +250,19 @@ namespace Holojam.IO {
             }
         }
 
-        public void OnGlobalGripPressDown(ViveEventData eventData) {
-            movement = new Vector3();
-            movement = box.position - eventData.module.transform.position;
-        }
+        //public void OnGlobalGripPressDown(ViveEventData eventData) {
+        //    movement = new Vector3();
+        //    movement = box.position - eventData.module.transform.position;
+        //}
 
-        public void OnGlobalGripPress(ViveEventData eventData) {
-            box.position = eventData.module.transform.position + movement;
+        //public void OnGlobalGripPress(ViveEventData eventData) {
+        //   // box.position = eventData.module.transform.position + movement;
 
-        }
+        //}
 
-        public void OnGlobalGripPressUp(ViveEventData eventData) {
+        //public void OnGlobalGripPressUp(ViveEventData eventData) {
 
-        }
+        //}
 
         public void OnGlobalTriggerPressDown(ViveEventData eventData) {
             isbutton = true;
