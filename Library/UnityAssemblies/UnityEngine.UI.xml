@@ -134,9 +134,9 @@
     </member>
     <member name="M:UnityEngine.EventSystems.BaseInputModule.IsPointerOverGameObject(System.Int32)">
       <summary>
-        <para>Is the pointer over a GameObject that is controlled by the EventSystem.</para>
+        <para>Is the pointer with the given ID over an EventSystem object?</para>
       </summary>
-      <param name="pointerId">Pointer id.</param>
+      <param name="pointerId">Pointer ID.</param>
     </member>
     <member name="M:UnityEngine.EventSystems.BaseInputModule.OnDisable">
       <summary>
@@ -255,15 +255,15 @@
     </member>
     <member name="M:UnityEngine.EventSystems.EventSystem.IsPointerOverGameObject">
       <summary>
-        <para>Is the pointer with the given id over an EventSystem object?</para>
+        <para>Is the pointer with the given ID over an EventSystem object?</para>
       </summary>
-      <param name="pointerId">Pointer (touch / mouse) id.</param>
+      <param name="pointerId">Pointer (touch / mouse) ID.</param>
     </member>
     <member name="M:UnityEngine.EventSystems.EventSystem.IsPointerOverGameObject(System.Int32)">
       <summary>
-        <para>Is the pointer with the given id over an EventSystem object?</para>
+        <para>Is the pointer with the given ID over an EventSystem object?</para>
       </summary>
-      <param name="pointerId">Pointer (touch / mouse) id.</param>
+      <param name="pointerId">Pointer (touch / mouse) ID.</param>
     </member>
     <member name="M:UnityEngine.EventSystems.EventSystem.OnDisable">
       <summary>
@@ -1226,7 +1226,7 @@
     </member>
     <member name="T:UnityEngine.EventSystems.RaycastResult">
       <summary>
-        <para>A hit result from a BaseRaycaster.</para>
+        <para>A hit result from a BaseRaycastModule.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.EventSystems.RaycastResult.depth">
@@ -2641,14 +2641,14 @@ If you have modified the list of options, you should call this method afterwards
         <para>Callback function when a UI element needs to generate vertices.</para>
       </summary>
       <param name="m">Mesh to populate with UI data.</param>
-      <param name="vh">VertexHelper utility.</param>
+      <param name="vh"></param>
     </member>
     <member name="M:UnityEngine.UI.Graphic.OnPopulateMesh(UnityEngine.UI.VertexHelper)">
       <summary>
         <para>Callback function when a UI element needs to generate vertices.</para>
       </summary>
       <param name="m">Mesh to populate with UI data.</param>
-      <param name="vh">VertexHelper utility.</param>
+      <param name="vh"></param>
     </member>
     <member name="M:UnityEngine.UI.Graphic.OnRebuildRequested">
       <summary>
@@ -2666,7 +2666,7 @@ If you have modified the list of options, you should call this method afterwards
     </member>
     <member name="M:UnityEngine.UI.Graphic.Raycast(UnityEngine.Vector2,UnityEngine.Camera)">
       <summary>
-        <para>When a GraphicRaycaster is raycasting into the scene it will first filter the elments using their RectTransform rect and then it will use this function to determine the elements hit by the raycast.</para>
+        <para>When a GraphicRaycaster is raycasting into the scene it will first filter the elments using their RectTransform rect and then it will use this function to determine the elements hit mby the raycast.</para>
       </summary>
       <param name="sp">Screen point.</param>
       <param name="eventCamera">Camera.</param>
@@ -3188,14 +3188,9 @@ Used if the native representation has been destroyed.</para>
         <para>Displays a Sprite for the UI System.</para>
       </summary>
     </member>
-    <member name="P:UnityEngine.UI.Image.alphaHitTestMinimumThreshold">
-      <summary>
-        <para>The alpha threshold specifies the minimum alpha a pixel must have for the event to considered a "hit" on the Image.</para>
-      </summary>
-    </member>
     <member name="P:UnityEngine.UI.Image.eventAlphaThreshold">
       <summary>
-        <para>The alpha threshold specifies the minimum alpha a pixel must have for the event to considered a "hit" on the Image.</para>
+        <para>The alpha threshold specifying the minimum alpha a pixel must have for the event to be passed through.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.UI.Image.fillAmount">
@@ -4412,7 +4407,7 @@ Characters 0-9, . (dot), and - (dash / minus sign) are allowed. The dash is only
     </member>
     <member name="T:UnityEngine.UI.MaskableGraphic">
       <summary>
-        <para>A Graphic that is capable of being masked out.</para>
+        <para>A Graphic that is capable of being mased out.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.UI.MaskableGraphic.maskable">
@@ -4687,7 +4682,7 @@ Characters 0-9, . (dot), and - (dash / minus sign) are allowed. The dash is only
     </member>
     <member name="M:UnityEngine.UI.Scrollbar.ClickRepeat(UnityEngine.EventSystems.PointerEventData)">
       <summary>
-        <para>Coroutine function for handling continual press during Scrollbar.OnPointerDown.</para>
+        <para>Coroutine function for handling continual press during OnPointerDown.</para>
       </summary>
       <param name="eventData"></param>
     </member>
@@ -4772,18 +4767,6 @@ Characters 0-9, . (dot), and - (dash / minus sign) are allowed. The dash is only
     <member name="M:UnityEngine.UI.Scrollbar.OnMove(UnityEngine.EventSystems.AxisEventData)">
       <summary>
         <para>Handling for movement events.</para>
-      </summary>
-      <param name="eventData"></param>
-    </member>
-    <member name="M:UnityEngine.UI.Scrollbar.OnPointerDown(UnityEngine.EventSystems.PointerEventData)">
-      <summary>
-        <para>Event triggered when pointer is pressed down on the scrollbar.</para>
-      </summary>
-      <param name="eventData"></param>
-    </member>
-    <member name="M:UnityEngine.UI.Scrollbar.OnPointerUp(UnityEngine.EventSystems.PointerEventData)">
-      <summary>
-        <para>Event triggered when pointer is released after pressing on the scrollbar.</para>
       </summary>
       <param name="eventData"></param>
     </member>

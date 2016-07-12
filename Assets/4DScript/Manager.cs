@@ -3,37 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-namespace Holojam.IO {
+namespace Holojam.Demo.FourthDimension {
     public class Manager : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler, IGlobalTouchpadPressDownHandler , IGlobalTouchpadTouchSetHandler, IGlobalApplicationMenuPressDownHandler{
-        [SerializeField]
-        int toggle;
-        Vector3 A_;
-        Vector3 B_;
-        Vector4 A, B;
-        Vector2 touch;
         public Material[] mat;
-        public Transform box;
-        public Transform ball;
+        public Transform box;       //Drag in Cube
+        public Transform ball;      //Drag in trackball
         public Transform _trackball;
-        bool isbutton;
+        public Vector3[] vertices;
+        public Vector4[] neighbors;
         public bool buttondown = false;
         public Trackball trackball;
         public GameObject root;
         public GameObject initmesh;
         public Hyperface hyperface;
-        float radius;
-        bool isscale;
-        //public int[] hyperface;
         public HyperCubeMesh hypermesh;
-        Vector3 movement;
-        // Use this for initialization
-        public Vector3[] vertices;
-        public Vector4[] neighbors;
-        Vector3 left,boxscale;
-        float distance;
-        LeftManager leftmanager;
         public GameObject leftcontroller;
-        List<GameObject> cloneList;
+
+        private bool isTriggerPressed;
+        private int toggle;
+        private Vector3 A_;
+        private Vector3 B_;
+        private Vector4 A, B;
+        private Vector2 touch;
+        private float radius;
+        private bool isscale;
+        private Vector3 movement;
+        private Vector3 left,boxscale;
+        private float distance;
+        private LeftManager leftmanager;
+        private List<GameObject> cloneList;
 
         void Awake() {
             neighbors = new Vector4[8];
@@ -45,22 +43,22 @@ namespace Holojam.IO {
             neighbors[5] = new Vector4(0, 0, -1, 0) * 0.175f * 2f;
             neighbors[6] = new Vector4(0, 0, 0, 1) * 0.175f * 2f;
             neighbors[7] = new Vector4(0, 0, 0, -1) * 0.175f * 2f;
-
+            root.GetComponent<Renderer>().material = mat[1];
+            toggle = 0;
+            trackball = new Trackball(4);
+            A_ = new Vector3();
+            B_ = new Vector3();
+            isTriggerPressed = false;
+            A = new Vector4();
+            B = new Vector4();
+            radius = 1.0f;
             cloneList = new List<GameObject>();
             leftmanager = leftcontroller.GetComponent<LeftManager>();
 
         }
 
         void Start() {
-            root.GetComponent<Renderer>().material = mat[1];
-            toggle = 0;
-            trackball = new Trackball(4);
-            A_ = new Vector3();
-            B_ = new Vector3();
-            isbutton = false;
-            A = new Vector4();
-            B = new Vector4();
-            radius = 1.0f;
+
         }
 
         // Update is called once per frame
@@ -106,14 +104,11 @@ namespace Holojam.IO {
         }
 
         public void setscale() {
-            // radius = radius* box.localScale.x / boxscale.x ;
-           // Debug.Log("radius " + radius);
-            //Debug.Log("Scale" + box.localScale.x / boxscale.x);
             boxscale = box.localScale;
         }
 
         void Update() {
-            if (isbutton) {
+            if (isTriggerPressed) {
                 Vector3 relapos = new Vector3();
                 relapos = (B_ - ball.position) * 8f / 3f;
                 float r = (float)Math.Sqrt(relapos.x * relapos.x + relapos.y * relapos.y + relapos.z * relapos.z);
@@ -153,8 +148,6 @@ namespace Holojam.IO {
                     else {
                         box.localScale = boxscale * (distance_ / distance);
                         radius = 1f * (box.lossyScale.x / 1f);
-                       // Vector3 tmp = new Vector3(0.6f, 0.6f, 0.6f);
-                       // ball.localScale = tmp * (1f / box.lossyScale.x);
                     }
                 } else {
                     if (box.localScale.x < 0.2)
@@ -163,8 +156,6 @@ namespace Holojam.IO {
 
                         box.localScale = boxscale * (distance_ / distance);
                         radius = 1f * (box.lossyScale.x / 1f);
-                       // Vector3 tmp = new Vector3(0.6f, 0.6f, 0.6f);
-                       // ball.localScale = tmp * (1f / box.lossyScale.x);
                     }
 
                     }
@@ -192,24 +183,17 @@ namespace Holojam.IO {
                 B = new Vector4(Q.x, Q.y, Q.z, 0f);
             }
             A = B;
-            isbutton = true;
-            // Debug.Log("Trigger Pressed Down");
+            isTriggerPressed = true;
         }
 
         public void OnGlobalTriggerPress(ViveEventData eventData) {
-
             B_ = eventData.module.transform.position;
-            // Debug.Log("Trigger Pressed ");
-
         }
 
         public void OnGlobalTriggerPressUp(ViveEventData eventData) {
-
             A_ = eventData.module.transform.position;
             B_ = eventData.module.transform.position;
-            // Debug.Log("Trigger Pressed up");
-            isbutton = false;
-
+            isTriggerPressed = false;
         }
 
         public void OnGlobalTriggerTouchDown(ViveEventData eventData) {
@@ -263,14 +247,11 @@ namespace Holojam.IO {
         }
         void IGlobalTouchpadTouchUpHandler.OnGlobalTouchpadTouchUp(ViveEventData eventData) {
             //throw new NotImplementedException();
-
         }
 
         void IGlobalApplicationMenuPressDownHandler.OnGlobalApplicationMenuPressDown(ViveEventData eventData) {
-            //Debug.Log("reload");
             Explode();
             Application.LoadLevel(0);
-
         }
     }
 }

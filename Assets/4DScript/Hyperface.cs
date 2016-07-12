@@ -2,35 +2,37 @@
 using System.Collections;
 using System;
 
-namespace Holojam.IO {
+namespace Holojam.Demo.FourthDimension {
     public class Hyperface : ViveGlobalReceiver, IGlobalTriggerPressSetHandler , IGlobalTouchpadTouchSetHandler {
-        Vector3 A_;
-        Vector3 B_;
-        Vector4 A, B;
-        Vector2 touch;
+
         public Vector4 center;
-        public Transform box;
-        bool isbutton;
-        public GameObject manager;
-        float radius;
+        public Transform box;           //Drag in the Cube GameObject
+        public GameObject manager;      //Drag in the Manager GameObject
         public int[] hyperface;
         public HyperCubeMesh hypermesh;
-        // Use this for initialization
         public Vector3[] vertices;
         public int faceindex;
         public int[] faces;
         public Mesh mesh;
         public GameObject parent;
-        void Start() {
+
+        private Vector3 _A, _B;
+        private Vector4 A, B;
+        private Vector2 touch;
+        private bool isTriggerPressed;
+        private float radius;
+
+        // Use this for initialization
+
+        void Awake() {
             faceindex = 0;
-            //trackball = new Trackball(4);
-            A_ = new Vector3();
-            B_ = new Vector3();
-            isbutton = false;
+            _A = new Vector3();
+            _B = new Vector3();
+            isTriggerPressed = false;
             A = new Vector4();
             B = new Vector4();
             center = new Vector4();
-            radius = 1.0f;
+            radius = 1.0f;              //Setup the radius of the sphere collider
             hypermesh = new HyperCubeMesh(center);
             vertices = new Vector3[8];
             hyperface = new int[] {       1,3,5,7,9,11,13,15,
@@ -47,12 +49,12 @@ namespace Holojam.IO {
 
             mesh = new Mesh();
             faces = new int[24] {
-               2,0,4,6,
-               3,1,5,7,
-               1,0,4,5,
-               3,2,6,7,
-               1,0,2,3,
-               5,4,6,7
+                                   2,0,4,6,
+                                   3,1,5,7,
+                                   1,0,4,5,
+                                   3,2,6,7,
+                                   1,0,2,3,
+                                   5,4,6,7
             };
             mesh.vertices = vertices;
             mesh.SetIndices(faces, MeshTopology.Quads, 0);
@@ -61,19 +63,15 @@ namespace Holojam.IO {
             GetComponent<MeshFilter>().mesh = mesh;
 
         }
-        void UpdateRotation(HyperCubeMesh cube) {
-
+        void UpdateRotation(HyperCubeMesh cube) {\
             for (int i = 0; i < 16; i++) {
-
                 float[] src = new float[4];
                 src[0] = cube.srcVertices[i].x;
                 src[1] = cube.srcVertices[i].y;
                 src[2] = cube.srcVertices[i].z;
                 src[3] = cube.srcVertices[i].w;
                 float[] dst = new float[4];
-
                 manager.GetComponent<Manager>().trackball.transform(src, dst);
-
                 cube.updatepoint4(dst, i);
             }
 
@@ -84,9 +82,9 @@ namespace Holojam.IO {
                 vertices[i] = hypermesh.get3dver(hyperface[i + faceindex * 8]);
             }
 
-            if (isbutton) {
+            if (isTriggerPressed) {
                 Vector3 relapos = new Vector3();
-                relapos = (B_ - box.position) * 8f / 3f;
+                relapos = (_B - box.position) * 8f / 3f;
                 float r = (float)Math.Sqrt(relapos.x * relapos.x + relapos.y * relapos.y + relapos.z * relapos.z);
                 if (r < radius) {
                     B = new Vector4(relapos.x, relapos.y, relapos.z, (float)Math.Sqrt(radius * radius - relapos.x * relapos.x - relapos.y * relapos.y - relapos.z * relapos.z));
@@ -98,16 +96,11 @@ namespace Holojam.IO {
                 }
                 UpdateRotation(hypermesh);
                 A = B;
-
             }
-
-
-            //mesh = new Mesh();
             mesh.vertices = vertices;
             mesh.SetIndices(faces, MeshTopology.Quads, 0);
             mesh.RecalculateBounds();
             mesh.Optimize();
-           // GetComponent<MeshFilter>().mesh = mesh;
         }
         public void Renew() {
 
@@ -116,20 +109,17 @@ namespace Holojam.IO {
             for (int i = 0; i < 8; i++) {
                 vertices[i] = hypermesh.get3dver(hyperface[i + faceindex * 8]);
             }
-
-            //mesh = new Mesh();
             mesh.vertices = vertices;
             mesh.SetIndices(faces, MeshTopology.Quads, 0);
             mesh.RecalculateBounds();
             mesh.Optimize();
-            //GetComponent<MeshFilter>().mesh = mesh;
             UpdateRotation(hypermesh);
         }
         public void OnGlobalTriggerPressDown(ViveEventData eventData) {
-            isbutton = true;
-            B_ = eventData.module.transform.position;
+            isTriggerPressed = true;
+            _B = eventData.module.transform.position;
             Vector3 relapos = new Vector3();
-            relapos = (B_ - box.position) * 8f / 3f;
+            relapos = (_B - box.position) * 8f / 3f;
             float r = (float)Math.Sqrt(relapos.x * relapos.x + relapos.y * relapos.y + relapos.z * relapos.z);
             if (r < radius) {
                 B = new Vector4(relapos.x, relapos.y, relapos.z, (float)Math.Sqrt(radius * radius - relapos.x * relapos.x - relapos.y * relapos.y - relapos.z * relapos.z));
@@ -138,32 +128,31 @@ namespace Holojam.IO {
                 B = new Vector4(Q.x, Q.y, Q.z, 0f);
             }
             A = B;
-            // Debug.Log("Trigger Pressed Down");
         }
 
         public void OnGlobalTriggerPress(ViveEventData eventData) {
-            isbutton = true;
-            B_ = eventData.module.transform.position;
+            isTriggerPressed = true;
+            _B = eventData.module.transform.position;
             // Debug.Log("Trigger Pressed ");
         }
 
         public void OnGlobalTriggerPressUp(ViveEventData eventData) {
-            isbutton = false;
-            A_ = eventData.module.transform.position;
-            B_ = eventData.module.transform.position;
+            isTriggerPressed = false;
+            _A = eventData.module.transform.position;
+            _B = eventData.module.transform.position;
             // Debug.Log("Trigger Pressed up");
         }
 
         public void OnGlobalTriggerTouchDown(ViveEventData eventData) {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnGlobalTriggerTouch(ViveEventData eventData) {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
         }
 
         public void OnGlobalTriggerTouchUp(ViveEventData eventData) {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
 
@@ -181,7 +170,6 @@ namespace Holojam.IO {
                     faceindex = (faceindex + 7) % 8;
                 touch = eventData.touchpadAxis;
             }
-            //Debug.Log(faceindex);
         }
 
         void IGlobalTouchpadTouchUpHandler.OnGlobalTouchpadTouchUp(ViveEventData eventData) {

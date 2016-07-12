@@ -2,17 +2,18 @@
 using System.Collections;
 using System;
 
-namespace Holojam.IO {
+namespace Holojam.Demo.FourthDimension {
     public class LeftManager : ViveGlobalReceiver, IGlobalTriggerHandler, IGlobalGripHandler, IGlobalApplicationMenuHandler {
-        LineRenderer line;
         public GameObject rightcontroller;
         public Transform trackball;
-        Manager right;
-        RaycastHit hit;
-        GameObject tmp;
         public bool buttondown = false;
         public GameObject root;
-        bool chosen;
+
+        private LineRenderer line;
+        private Manager right;
+        private RaycastHit hit;
+        private GameObject tmp;
+        private bool chosen;
 
         public void OnGlobalTriggerPress(ViveEventData eventData) {
             right.root.GetComponent<Renderer>().material = right.mat[0];
@@ -36,8 +37,6 @@ namespace Holojam.IO {
                 line.SetPosition(0, eventData.module.transform.position);
                 line.SetPosition(1, eventData.module.transform.position+1000* eventData.module.transform.forward);
             }
-            
-            //line.enabled = false;
         }
 
         public void OnGlobalTriggerPressDown(ViveEventData eventData) {
@@ -52,7 +51,6 @@ namespace Holojam.IO {
                 right.root = hit.transform.gameObject;
                 right.root.GetComponent<Renderer>().material = right.mat[1];
                 right.Sethyperface();
-                //trackball.localPosition = right.root.GetComponent<BoxCollider>().center;
                 right.ball = trackball;
             } else {
                 right.root.GetComponent<Renderer>().material = right.mat[1];
@@ -72,11 +70,8 @@ namespace Holojam.IO {
         public void OnGlobalTriggerTouchUp(ViveEventData eventData) {
            // throw new NotImplementedException();
         }
-
-
-
         // Use this for initialization
-        void Start() {
+        void Awake() {
             right = rightcontroller.GetComponent<Manager>();
             line = GetComponent<LineRenderer>();
             line.SetVertexCount(2);
