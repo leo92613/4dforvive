@@ -4,7 +4,7 @@ using System;
 
 
 
-namespace Holojam.Demo.FourthDimension {
+namespace Holojam.IO {
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     public class HyperCubeMesh : MonoBehaviour {

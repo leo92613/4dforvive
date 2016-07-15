@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-namespace Holojam.Demo.FourthDimension {
+namespace Holojam.IO {
     public class Manager : ViveGlobalReceiver, IGlobalTriggerPressSetHandler, IGlobalGripHandler, IGlobalTouchpadPressDownHandler , IGlobalTouchpadTouchSetHandler, IGlobalApplicationMenuPressDownHandler{
         public Material[] mat;
         public Transform box;       //Drag in Cube

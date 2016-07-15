@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-namespace Holojam.Demo.FourthDimension {
+namespace Holojam.IO {
     public class Hyperface : ViveGlobalReceiver, IGlobalTriggerPressSetHandler , IGlobalTouchpadTouchSetHandler {
 
         public Vector4 center;
@@ -63,7 +63,7 @@ namespace Holojam.Demo.FourthDimension {
             GetComponent<MeshFilter>().mesh = mesh;
 
         }
-        void UpdateRotation(HyperCubeMesh cube) {\
+        void UpdateRotation(HyperCubeMesh cube) {
             for (int i = 0; i < 16; i++) {
                 float[] src = new float[4];
                 src[0] = cube.srcVertices[i].x;

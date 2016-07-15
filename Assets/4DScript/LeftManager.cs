@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-namespace Holojam.Demo.FourthDimension {
+namespace Holojam.IO {
     public class LeftManager : ViveGlobalReceiver, IGlobalTriggerHandler, IGlobalGripHandler, IGlobalApplicationMenuHandler {
         public GameObject rightcontroller;
         public Transform trackball;
