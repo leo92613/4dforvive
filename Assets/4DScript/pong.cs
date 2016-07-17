@@ -4,9 +4,17 @@ namespace Holojam.IO {
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
     public class pong : MonoBehaviour {
+        [SerializeField]
+        Vector4 speed;
+        [SerializeField]
+        Vector4 pos = new Vector4();
+
         float scalefactor = 0.08f;
         Vector4[] srcVertices, vertices;
         Vector4 center = new Vector4(0, 0.5f, 0, 0);
+        Mesh mesh;
+        float X, Y, Z, W;
+        public GameObject hitobject;
         #region Face
         int[] faces = new int[] {4,0,8,12,
             6,2,10,14,
@@ -33,13 +41,7 @@ namespace Holojam.IO {
             5,4,6,7,
             13,12,14,15};
         #endregion
-        Mesh mesh;
-        [SerializeField]
-        Vector4 speed;
-        [SerializeField]
-        Vector4 pos = new Vector4();
-        float X, Y, Z, W;
-        public GameObject hitobject;
+
 
 
 // Methods
@@ -76,14 +78,11 @@ namespace Holojam.IO {
             vertices[i].w = (float)src[3];
         }
         public void setupmesh(Mesh mesh) {
-           // Vector3 _position = new Vector3();
             Vector3[] _vertices;
             _vertices = new Vector3[16];
             for (int i = 0; i < 16; i++) {
                 _vertices[i] = get3dver(i);
-              //  _position += _vertices[i];
             }
-            //this.transform.position = _position;// / 16f;
             mesh.vertices = _vertices;
             mesh.SetIndices(faces, MeshTopology.Quads, 0);
             mesh.RecalculateBounds();
@@ -94,20 +93,16 @@ namespace Holojam.IO {
             GetComponent<MeshCollider>().sharedMesh = mesh;
         }
         public void move(Vector4 movement) {
-
             for (int i = 0; i < 16; i++) {
                 vertices[i] = srcVertices[i]+movement;
             }
             float factor = 2 / (2 + movement.w);
             hitobject.GetComponent<Transform>().position = new Vector3(movement.x, movement.y + 1f, movement.z) * factor;
-
         }
             void changespeed(Vector4 _speed) {
                 speed += _speed;
             }
             void checkboundary(Vector4 _pos) {
-
-              //   Debug.Log(vertices[1]);
             bool isout = false;
                 if (_pos.x > X) {
                     pos.x = 2 * X - _pos.x;
@@ -156,7 +151,6 @@ namespace Holojam.IO {
                 }
                 if (_pos.w >= -W && _pos.w <= W)
                     pos.w = _pos.w;
-
                 if (isout)
                     StartCoroutine(pulse());
 
@@ -194,21 +188,14 @@ namespace Holojam.IO {
 
         // Update is called once per frame
         void Update() {
-            //float x = Random.Range(0.1f, 0.5f);
-            //float y = Random.Range(0.1f, 0.5f);
-            // float z = Random.Range(0.1f, 0.5f);
-            // float w = Random.Range(0.1f, 0.5f);
-            // Vector4 speed = new Vector4(x, y, z, w);
             Vector4 tmp = new Vector4();
             tmp = pos + speed * Time.deltaTime;
-            //Debug.Log(tmp);
             checkboundary(tmp);
             move(pos);
             setupmesh(mesh);
         }
         void OnTriggerEnter(Collider other) {
             if (other.gameObject.tag == "Player") {
-               // Debug.Log("HIT!!!!");
                 StartCoroutine(pulse());
                 hit(other.GetComponent<ShowVelocity>().velocity);
             }
